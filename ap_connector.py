@@ -1,3 +1,4 @@
+import machine
 import network
 
 try:
@@ -6,7 +7,7 @@ except ImportError:
     print("WiFi secrets are kept in secrets.py, please add them there!")
     raise
 
-def estabilishConnection():
+def estabilishConnection() -> str:
     wlan = network.WLAN(network.STA_IF)
 
     if not wlan.isconnected():
@@ -17,4 +18,12 @@ def estabilishConnection():
         while not wlan.isconnected():
             pass
         
-        print('network config:', wlan.ifconfig())
+    ip = wlan.ifconfig()[0]
+    print('ip: ', ip)
+        
+    return ip
+
+try:
+    ip = estabilishConnection()
+except KeyboardInterrupt:
+    machine.reset()
